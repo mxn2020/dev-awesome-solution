@@ -1,7 +1,7 @@
 // src/pages/Landing.tsx
 
 import React, { useState, useEffect } from 'react';
-import { MapPin, Phone, Mail, Bed, Wifi, Car, Coffee, Star, Calendar, Users, User, Utensils } from 'lucide-react';
+import { MapPin, Phone, Mail, Bed, Wifi, Car, Coffee, Star, Calendar, Users, User, Utensils, Wine, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Container, Button, Card, CardContent, Badge, Header, Nav, Section, Span, H1, H2, H3, P, Div, Footer, Input } from '../lib/dev-container';
 import { useAuth } from '../components/auth/AuthProvider';
@@ -19,12 +19,13 @@ const getAmenityId = (index: number): ComponentRegistryId => {
 };
 
 const getFeatureCardId = (index: number): ComponentRegistryId => {
-  const ids: ComponentRegistryId[] = ['noID', 'noID', 'noID', 'noID'];
+  const ids: ComponentRegistryId[] = ['noID', 'noID', 'noID', 'noID', 'noID'];
   return ids[index] || 'noID';
 };
 
 export const Landing: React.FC = () => {
   const [mounted, setMounted] = useState(false);
+  const [currentFeatureSlide, setCurrentFeatureSlide] = useState(0);
   const [bookingForm, setBookingForm] = useState({
     checkIn: '',
     checkOut: '',
@@ -89,26 +90,48 @@ export const Landing: React.FC = () => {
 
   const features = [
     {
-      icon: <MapPin className="w-8 h-8 text-blue-600" />,
+      icon: <MapPin className="w-8 h-8 text-black" />,
       title: "Prime Location",
       description: "Located in the heart of Nijmegen with easy access to historic sites and shopping"
     },
     {
-      icon: <Utensils className="w-8 h-8 text-green-600" />,
+      icon: <Utensils className="w-8 h-8 text-black" />,
       title: "Fine Dining",
       description: "Award-winning restaurant serving local and international cuisine"
     },
     {
-      icon: <Bed className="w-8 h-8 text-purple-600" />,
+      icon: <Bed className="w-8 h-8 text-black" />,
       title: "Luxury Comfort",
       description: "Elegantly appointed rooms with premium amenities and modern facilities"
     },
     {
-      icon: <Users className="w-8 h-8 text-orange-600" />,
+      icon: <Users className="w-8 h-8 text-black" />,
       title: "Business Facilities",
       description: "State-of-the-art conference rooms and business center for corporate events"
+    },
+    {
+      icon: <Wine className="w-8 h-8 text-black" />,
+      title: "Rooftop Bar",
+      description: "Stunning rooftop bar with panoramic views of Nijmegen and craft cocktails"
     }
   ];
+
+  const nextFeatureSlide = () => {
+    setCurrentFeatureSlide((prev) => (prev + 1) % Math.ceil(features.length / getCardsPerSlide()));
+  };
+
+  const prevFeatureSlide = () => {
+    setCurrentFeatureSlide((prev) => (prev - 1 + Math.ceil(features.length / getCardsPerSlide())) % Math.ceil(features.length / getCardsPerSlide()));
+  };
+
+  const getCardsPerSlide = () => {
+    if (typeof window !== 'undefined') {
+      if (window.innerWidth >= 1024) return 4; // lg screens
+      if (window.innerWidth >= 768) return 2;  // md screens
+      return 1; // sm screens
+    }
+    return 4; // default
+  };
 
   return (
     <Container componentId="noID">
@@ -316,30 +339,91 @@ export const Landing: React.FC = () => {
 
         {/* Features Section */}
         <Container componentId="features-section">
-          <Section devId="noID" className="py-16 bg-gray-50">
+          <Section devId="noID" className="py-16 bg-gradient-to-r from-yellow-400 to-yellow-500">
             <Div devId="noID" className="container mx-auto px-4">
               <Div devId="noID" className="text-center mb-12">
-                <H2 devId="noID" className="text-4xl font-bold text-gray-900 mb-4">Why Choose Van der Valk Nijmegen?</H2>
-                <P devId="noID" className="text-gray-600 max-w-2xl mx-auto">
+                <H2 devId="noID" className="text-4xl font-bold text-black mb-4">Why Choose Van der Valk Nijmegen?</H2>
+                <P devId="noID" className="text-black max-w-2xl mx-auto">
                   Discover what makes our hotel the perfect choice for your stay in Nijmegen
                 </P>
               </Div>
-              <Div devId="noID" className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                {features.map((feature, index) => (
-                  <Card 
-                    key={index} 
-                    devId={getFeatureCardId(index)}
-                    devName={`${feature.title} Feature Card`}
-                    devDescription={`Feature card highlighting ${feature.title}`}
-                    className="text-center p-6 hover:shadow-lg transition-shadow"
+              <Div devId="noID" className="relative">
+                {/* Carousel Container */}
+                <Div devId="noID" className="overflow-hidden">
+                  <Div 
+                    devId="noID" 
+                    className="flex transition-transform duration-500 ease-in-out"
+                    style={{ 
+                      transform: `translateX(-${currentFeatureSlide * 100}%)`,
+                    }}
                   >
-                    <CardContent devId="noID" className="p-0">
-                      <Div devId="noID" className="mb-4 flex justify-center">{feature.icon}</Div>
-                      <H3 devId="noID" className="text-xl font-semibold text-gray-900 mb-2">{feature.title}</H3>
-                      <P devId="noID" className="text-gray-600">{feature.description}</P>
-                    </CardContent>
-                  </Card>
-                ))}
+                    {Array.from({ length: Math.ceil(features.length / getCardsPerSlide()) }).map((_, slideIndex) => (
+                      <Div key={slideIndex} devId="noID" className="w-full flex-shrink-0">
+                        <Div devId="noID" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-4">
+                          {features
+                            .slice(slideIndex * getCardsPerSlide(), (slideIndex + 1) * getCardsPerSlide())
+                            .map((feature, index) => (
+                              <Card 
+                                key={slideIndex * getCardsPerSlide() + index} 
+                                devId={getFeatureCardId(slideIndex * getCardsPerSlide() + index)}
+                                devName={`${feature.title} Feature Card`}
+                                devDescription={`Feature card highlighting ${feature.title}`}
+                                className="text-center p-6 hover:shadow-lg transition-shadow bg-white border border-yellow-300"
+                              >
+                                <CardContent devId="noID" className="p-0">
+                                  <Div devId="noID" className="mb-4 flex justify-center">{feature.icon}</Div>
+                                  <H3 devId="noID" className="text-xl font-semibold text-black mb-2">{feature.title}</H3>
+                                  <P devId="noID" className="text-gray-800">{feature.description}</P>
+                                </CardContent>
+                              </Card>
+                            ))}
+                        </Div>
+                      </Div>
+                    ))}
+                  </Div>
+                </Div>
+                
+                {/* Navigation Arrows */}
+                {Math.ceil(features.length / getCardsPerSlide()) > 1 && (
+                  <>
+                    <Button
+                      devId="noID"
+                      devName="Previous Features Button"
+                      devDescription="Navigate to previous features in carousel"
+                      onClick={prevFeatureSlide}
+                      className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-2 rounded-full transition-all"
+                    >
+                      <ChevronLeft className="w-6 h-6" />
+                    </Button>
+                    <Button
+                      devId="noID"
+                      devName="Next Features Button"
+                      devDescription="Navigate to next features in carousel"
+                      onClick={nextFeatureSlide}
+                      className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-2 rounded-full transition-all"
+                    >
+                      <ChevronRight className="w-6 h-6" />
+                    </Button>
+                  </>
+                )}
+                
+                {/* Carousel Indicators */}
+                {Math.ceil(features.length / getCardsPerSlide()) > 1 && (
+                  <Div devId="noID" className="flex justify-center mt-8 space-x-2">
+                    {Array.from({ length: Math.ceil(features.length / getCardsPerSlide()) }).map((_, index) => (
+                      <Button
+                        key={index}
+                        devId="noID"
+                        onClick={() => setCurrentFeatureSlide(index)}
+                        className={`w-3 h-3 rounded-full transition-all ${
+                          currentFeatureSlide === index 
+                            ? 'bg-black' 
+                            : 'bg-black bg-opacity-30 hover:bg-opacity-50'
+                        }`}
+                      />
+                    ))}
+                  </Div>
+                )}
               </Div>
             </Div>
           </Section>
