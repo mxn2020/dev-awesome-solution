@@ -2,7 +2,6 @@
 
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Landing } from './pages/Landing';
-import { Restaurant } from './pages/Restaurant';
 import { Login } from './components/auth/Login';
 import { Register } from './components/auth/Register';
 import { Dashboard } from './components/auth/Dashboard';
@@ -21,7 +20,6 @@ function App() {
             <div className="App">
               <Routes>
                 <Route path="/" element={<Landing />} />
-                <Route path="/restaurant" element={<Restaurant />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route 
