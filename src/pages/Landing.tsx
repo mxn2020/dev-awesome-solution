@@ -1,15 +1,20 @@
 // src/pages/Landing.tsx
 
 import React, { useState, useEffect } from 'react';
-import { Database, Zap, Code, Globe, Users, Star, User } from 'lucide-react';
+import { MapPin, Phone, Mail, Bed, Wifi, Car, Coffee, Star, Calendar, Users, User, Utensils } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Container, Button, Card, CardContent, Badge, Header, Nav, Section, Span, H1, H2, P, Div, Footer } from '../lib/dev-container';
+import { Container, Button, Card, CardContent, Badge, Header, Nav, Section, Span, H1, H2, H3, P, Div, Footer, Input, Textarea } from '../lib/dev-container';
 import { useAuth } from '../components/auth/AuthProvider';
 import type { ComponentRegistryId } from '../registry/componentRegistry';
 
-// Helper functions to ensure type safety for dynamic IDs
-const getStatCardId = (index: number): ComponentRegistryId => {
-  const ids: ComponentRegistryId[] = ['stat-card-0', 'stat-card-1', 'stat-card-2', 'stat-card-3'];
+// Helper functions for type-safe dynamic IDs
+const getRoomCardId = (index: number): ComponentRegistryId => {
+  const ids: ComponentRegistryId[] = ['room-card-0', 'room-card-1', 'room-card-2', 'room-card-3'];
+  return ids[index] || 'noID';
+};
+
+const getAmenityId = (index: number): ComponentRegistryId => {
+  const ids: ComponentRegistryId[] = ['amenity-0', 'amenity-1', 'amenity-2', 'amenity-3', 'amenity-4', 'amenity-5'];
   return ids[index] || 'noID';
 };
 
@@ -18,403 +23,629 @@ const getFeatureCardId = (index: number): ComponentRegistryId => {
   return ids[index] || 'noID';
 };
 
-const getTechLetterId = (index: number): ComponentRegistryId => {
-  const ids: ComponentRegistryId[] = ['tech-letter-0', 'tech-letter-1', 'tech-letter-2', 'tech-letter-3', 'tech-letter-4', 'tech-letter-5'];
-  return ids[index] || 'noID';
-};
-
-const getTechBadgeId = (index: number): ComponentRegistryId => {
-  const ids: ComponentRegistryId[] = ['tech-badge-0', 'tech-badge-1', 'tech-badge-2', 'tech-badge-3', 'tech-badge-4', 'tech-badge-5'];
-  return ids[index] || 'noID';
-};
-
 export const Landing: React.FC = () => {
   const [mounted, setMounted] = useState(false);
+  const [bookingForm, setBookingForm] = useState({
+    checkIn: '',
+    checkOut: '',
+    guests: 1,
+    roomType: 'standard',
+    name: '',
+    email: '',
+    phone: ''
+  });
   const { isAuthenticated, user } = useAuth();
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const features = [
+  const handleBookingSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle booking submission
+    console.log('Booking submitted:', bookingForm);
+    alert('Booking request submitted! We will contact you shortly.');
+  };
+
+  const rooms = [
     {
-      icon: <Zap className="w-8 h-8 text-yellow-500" />,
-      title: "Lightning Fast",
-      description: "Built with Vite for instant hot module replacement and blazing fast builds"
+      name: "Standard Room",
+      price: "€89",
+      image: "/api/placeholder/400/300",
+      features: ["Free WiFi", "Air Conditioning", "Private Bathroom", "TV"],
+      description: "Comfortable standard room with modern amenities"
     },
     {
-      icon: <Database className="w-8 h-8 text-green-500" />,
-      title: "MongoDB + Prisma",
-      description: "Type-safe database access with MongoDB flexibility and Prisma's developer experience"
+      name: "Deluxe Room",
+      price: "€129",
+      image: "/api/placeholder/400/300",
+      features: ["Free WiFi", "Air Conditioning", "Mini Bar", "City View"],
+      description: "Spacious deluxe room with beautiful city views"
     },
     {
-      icon: <Code className="w-8 h-8 text-blue-500" />,
-      title: "TypeScript Ready",
-      description: "Full TypeScript support with strict type checking and IntelliSense"
+      name: "Executive Suite",
+      price: "€199",
+      image: "/api/placeholder/400/300",
+      features: ["Free WiFi", "Separate Living Area", "Premium Amenities", "River View"],
+      description: "Luxurious suite with separate living area and premium services"
     },
     {
-      icon: <Globe className="w-8 h-8 text-purple-500" />,
-      title: "Deploy Anywhere",
-      description: "Ready for Netlify, Vercel, or any modern hosting platform"
+      name: "Family Room",
+      price: "€159",
+      image: "/api/placeholder/400/300",
+      features: ["Free WiFi", "Extra Space", "Family Amenities", "Garden View"],
+      description: "Perfect for families with extra space and child-friendly amenities"
     }
   ];
 
-  const stats = [
-    { label: "Build Time", value: "< 2s" },
-    { label: "Bundle Size", value: "< 50KB" },
-    { label: "TypeScript", value: "100%" },
-    { label: "Performance", value: "A+" }
+  const amenities = [
+    { icon: <Wifi className="w-6 h-6" />, name: "Free WiFi" },
+    { icon: <Car className="w-6 h-6" />, name: "Free Parking" },
+    { icon: <Coffee className="w-6 h-6" />, name: "Restaurant" },
+    { icon: <Bed className="w-6 h-6" />, name: "Room Service" },
+    { icon: <Users className="w-6 h-6" />, name: "Conference Rooms" },
+    { icon: <Star className="w-6 h-6" />, name: "Concierge Service" }
+  ];
+
+  const features = [
+    {
+      icon: <MapPin className="w-8 h-8 text-blue-600" />,
+      title: "Prime Location",
+      description: "Located in the heart of Nijmegen with easy access to historic sites and shopping"
+    },
+    {
+      icon: <Utensils className="w-8 h-8 text-green-600" />,
+      title: "Fine Dining",
+      description: "Award-winning restaurant serving local and international cuisine"
+    },
+    {
+      icon: <Bed className="w-8 h-8 text-purple-600" />,
+      title: "Luxury Comfort",
+      description: "Elegantly appointed rooms with premium amenities and modern facilities"
+    },
+    {
+      icon: <Users className="w-8 h-8 text-orange-600" />,
+      title: "Business Facilities",
+      description: "State-of-the-art conference rooms and business center for corporate events"
+    }
   ];
 
   return (
-    <Container componentId="landing-page-root"> {/* Changed to direct ID */}
+    <Container componentId="hotel-landing-page">
       <Div 
         devId="main-wrapper" 
         devName="Main Wrapper" 
-        devDescription="Main page wrapper with gradient background"
-        className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900"
+        devDescription="Main page wrapper for Van der Valk hotel website"
+        className="min-h-screen bg-white"
       >
-      {/* Header */}
-      <Header 
-        devId="main-header" 
-        devName="Main Header" 
-        devDescription="Primary site header with navigation"
-        className="container mx-auto px-4 py-6"
-      >
-        <Nav 
-          devId="main-nav" 
-          devName="Main Navigation" 
-          devDescription="Primary navigation bar"
-          className="flex items-center justify-between"
+        {/* Header */}
+        <Header 
+          devId="hotel-header" 
+          devName="Hotel Header" 
+          devDescription="Hotel website header with navigation"
+          className="bg-white shadow-sm sticky top-0 z-50"
         >
-          <Div 
-            devId="logo-section" 
-            devName="Logo Section" 
-            devDescription="Company logo and brand name"
-            className="flex items-center space-x-2"
+          <Nav 
+            devId="hotel-nav" 
+            devName="Hotel Navigation" 
+            devDescription="Primary navigation for hotel website"
+            className="container mx-auto px-4 py-4 flex items-center justify-between"
           >
-            <Div devId="noID" className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-              <Code className="w-5 h-5 text-white" />
-            </Div>
-            <Span 
-              devId="brand-name" 
-              devName="Brand Name" 
-              devDescription="Geenius Template brand name"
-              className="text-xl font-bold text-white"
-            >
-              Geenius Template
-            </Span>
-          </Div>
-          <Div 
-            devId="nav-actions" 
-            devName="Navigation Actions" 
-            devDescription="Navigation buttons and user menu"
-            className="flex items-center space-x-4"
-          >
-            <Button 
-              devId="docs-button" 
-              devName="Docs Button" 
-              devDescription="Link to documentation"
-              variant="ghost" 
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              Docs
-            </Button>
-            {isAuthenticated ? (
-              <Div 
-                devId="user-section" 
-                devName="User Section" 
-                devDescription="Authenticated user welcome area"
-                className="flex items-center space-x-4"
-              >
-                <Span 
-                  devId="welcome-message" 
-                  devName="Welcome Message" 
-                  devDescription="Welcome message for authenticated user"
-                  className="text-gray-300"
-                >
-                  Welcome, {user?.name?.split(' ')[0]}!
-                </Span>
-                <Link to="/dashboard">
-                  <Button 
-                    devId="nav-dashboard-button"
-                    devName="Navigation Dashboard Button"
-                    devDescription="Dashboard button in navigation header for authenticated users"
-                    className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors"
-                  >
-                    <User className="w-4 h-4 mr-2" />
-                    Dashboard
-                  </Button>
-                </Link>
-              </Div>
-            ) : (
-              <Div 
-                devId="auth-buttons" 
-                devName="Authentication Buttons" 
-                devDescription="Login and register buttons for unauthenticated users"
-                className="flex items-center space-x-2"
-              >
-                <Link to="/login">
-                  <Button 
-                    devId="nav-login-button"
-                    devName="Navigation Login Button"
-                    devDescription="Login button in navigation header"
-                    variant="ghost" 
-                    className="text-gray-300 hover:text-white transition-colors"
-                  >
-                    Login
-                  </Button>
-                </Link>
-                <Link to="/register">
-                  <Button 
-                    devId="nav-register-button"
-                    devName="Navigation Register Button"
-                    devDescription="Get started button in navigation header"
-                    className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors"
-                  >
-                    Get Started
-                  </Button>
-                </Link>
-              </Div>
-            )}
-          </Div>
-        </Nav>
-      </Header>
-
-      {/* Hero Section */}
-      <Container componentId="hero-section"> {/* Changed to direct ID */}
-        <Section 
-          devId="hero-content" 
-          devName="Hero Content" 
-          devDescription="Main hero Section with title and call-to-action"
-          className="container mx-auto px-4 py-20 text-center"
-        >
-          <Div 
-            devId="hero-content-wrapper" 
-            devName="Hero Content Wrapper" 
-            devDescription="Animated wrapper for hero content"
-            className={`transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-          >
-            <H1 
-              devId="hero-title" 
-              devName="Hero Title" 
-              devDescription="Main hero title showcasing the tech stack"
-              className="text-5xl md:text-7xl font-bold text-white mb-6"
-            >
-              Vite + React + 
-              <Span 
-                devId="mongodb-highlight" 
-                devName="MongoDB Highlight" 
-                devDescription="Highlighted MongoDB text in gradient"
-                className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent"
-              >
-                {' '}MongoDB
-              </Span>
-            </H1>
-            <P 
-              devId="hero-description" 
-              devName="Hero Description" 
-              devDescription="Hero Section description explaining the template benefits"
-              className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto"
-            >
-              Modern full-stack template with lightning-fast development, type-safe database access, 
-              and production-ready deployment configuration.
-            </P>
             <Div 
-              devId="hero-cta-buttons" 
-              devName="Hero CTA Buttons" 
-              devDescription="Call-to-action buttons in hero Section"
-              className="flex flex-col sm:flex-row gap-4 justify-center"
+              devId="hotel-logo" 
+              devName="Hotel Logo" 
+              devDescription="Van der Valk hotel logo and brand"
+              className="flex items-center space-x-3"
+            >
+              <Div devId="noID" className="w-10 h-10 bg-gradient-to-r from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
+                <Bed className="w-6 h-6 text-white" />
+              </Div>
+              <Div devId="noID" className="flex flex-col">
+                <Span 
+                  devId="hotel-brand" 
+                  devName="Hotel Brand Name" 
+                  devDescription="Van der Valk brand name"
+                  className="text-xl font-bold text-gray-900"
+                >
+                  Van der Valk
+                </Span>
+                <Span 
+                  devId="hotel-location" 
+                  devName="Hotel Location" 
+                  devDescription="Hotel location - Nijmegen"
+                  className="text-sm text-gray-600"
+                >
+                  Nijmegen
+                </Span>
+              </Div>
+            </Div>
+            
+            <Div 
+              devId="nav-links" 
+              devName="Navigation Links" 
+              devDescription="Main navigation links"
+              className="hidden md:flex items-center space-x-8"
+            >
+              <a href="#rooms" className="text-gray-700 hover:text-blue-600 transition-colors">Rooms</a>
+              <Link to="/restaurant" className="text-gray-700 hover:text-blue-600 transition-colors">Restaurant</Link>
+              <a href="#amenities" className="text-gray-700 hover:text-blue-600 transition-colors">Amenities</a>
+              <a href="#contact" className="text-gray-700 hover:text-blue-600 transition-colors">Contact</a>
+            </Div>
+
+            <Div 
+              devId="nav-actions" 
+              devName="Navigation Actions" 
+              devDescription="Navigation buttons and user menu"
+              className="flex items-center space-x-4"
             >
               {isAuthenticated ? (
-                <Link to="/dashboard">
-                  <Button 
-                    devId="hero-start-building"
-                    devName="Start Building Button"
-                    devDescription="Primary call-to-action button for starting to build with the template"
-                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-lg font-semibold transition-all transform hover:scale-105"
-                  >
-                    Go to Dashboard
-                  </Button>
-                </Link>
-              ) : (
-                <Link to="/register">
-                  <Button 
-                    devId="hero-start-building"
-                    devName="Start Building Button"
-                    devDescription="Primary call-to-action button for starting to build with the template"
-                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-lg font-semibold transition-all transform hover:scale-105"
-                  >
-                    Start Building
-                  </Button>
-                </Link>
-              )}
-              <Button 
-                devId="hero-github-button"
-                devName="View on GitHub Button"
-                devDescription="Secondary button to view the project on GitHub"
-                variant="outline"
-                className="border border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white px-8 py-3 rounded-lg font-semibold transition-all"
-              >
-                View on GitHub
-              </Button>
-            </Div>
-          </Div>
-        </Section>
-      </Container>
-
-      {/* Stats Section */}
-      <Container componentId="stats-section"> {/* Changed to direct ID */}
-        <Section 
-          devId="stats-content" 
-          devName="Stats Content" 
-          devDescription="Statistics Section showing performance metrics"
-          className="container mx-auto px-4 py-12"
-        >
-          <Div 
-            devId="stats-grid" 
-            devName="Stats Grid" 
-            devDescription="Grid container for statistics cards"
-            className="grid grid-cols-2 md:grid-cols-4 gap-6"
-          >
-            {stats.map((stat, index) => (
-              <Card 
-                key={index} 
-                devId={getStatCardId(index)}
-                devName={`${stat.label} Stat Card`}
-                devDescription={`Statistical card showing ${stat.label}: ${stat.value}`}
-                className="bg-white/5 backdrop-blur-sm rounded-xl p-6 text-center border border-white/10"
-              >
-                <CardContent devId="noID"  className="p-0">
-                  <Div devId="noID" className="text-2xl font-bold text-white mb-2">{stat.value}</Div>
-                  <Div devId="noID" className="text-gray-400">{stat.label}</Div>
-                </CardContent>
-              </Card>
-            ))}
-          </Div>
-        </Section>
-      </Container>
-
-      {/* Features Section */}
-      <Container componentId="features-section"> {/* Changed to direct ID */}
-        <Section devId="noID" className="container mx-auto px-4 py-20">
-          <Div devId="noID" className="text-center mb-16">
-            <H2 devId="noID" className="text-4xl font-bold text-white mb-4">Why Choose This Template?</H2>
-            <P devId="noID" className="text-gray-300 max-w-2xl mx-auto">
-              Everything you need to build modern web applications with the latest technologies
-            </P>
-          </Div>
-          <Div devId="noID" className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {features.map((feature, index) => (
-              <Card 
-                key={index} 
-                devId={getFeatureCardId(index)}
-                devName={`${feature.title} Feature Card`}
-                devDescription={`Feature card highlighting ${feature.title}: ${feature.description}`}
-                className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-purple-500/50 transition-all"
-              >
-                <CardContent devId="noID" className="p-0">
-                  <Div devId="noID" className="mb-4">{feature.icon}</Div>
-                  <h3 className="text-xl font-semibold text-white mb-2">{feature.title}</h3>
-                  <P devId="noID" className="text-gray-400">{feature.description}</P>
-                </CardContent>
-              </Card>
-            ))}
-          </Div>
-        </Section>
-      </Container>
-
-      {/* Tech Stack Section */}
-      <Container componentId="tech-stack-section"> {/* Changed to direct ID */}
-        <Section devId="noID" className="container mx-auto px-4 py-20">
-          <Div devId="noID" className="text-center mb-16">
-            <H2 devId="noID" className="text-4xl font-bold text-white mb-4">Modern Tech Stack</H2>
-            <P devId="noID" className="text-gray-300 max-w-2xl mx-auto">
-              Built with the most popular and reliable technologies
-            </P>
-          </Div>
-          <Div devId="noID" className="grid grid-cols-2 md:grid-cols-6 gap-8">
-            {[
-              { name: "Vite", color: "from-yellow-400 to-orange-500" },
-              { name: "React", color: "from-blue-400 to-cyan-400" },
-              { name: "TypeScript", color: "from-blue-500 to-blue-600" },
-              { name: "MongoDB", color: "from-green-400 to-green-500" },
-              { name: "Prisma", color: "from-purple-400 to-purple-500" },
-              { name: "Tailwind", color: "from-teal-400 to-teal-500" }
-            ].map((tech, index) => (
-              <Div key={index} devId="noID" className="text-center">
-                <Div devId={getTechLetterId(index)} className={`w-16 h-16 mx-auto mb-3 rounded-xl bg-gradient-to-br ${tech.color} flex items-center justify-center`}>
-                  <span className="text-white font-bold text-lg">{tech.name[0]}</span>
-                </Div>
-                <Badge 
-                  devId={getTechBadgeId(index)}
-                  devName={`${tech.name} Technology Badge`}
-                  devDescription={`Technology badge for ${tech.name}`}
-                  className="text-gray-300 font-medium bg-transparent border-none"
+                <Div 
+                  devId="user-section" 
+                  devName="User Section" 
+                  devDescription="Authenticated user welcome area"
+                  className="flex items-center space-x-4"
                 >
-                  {tech.name}
-                </Badge>
-              </Div>
-            ))}
-          </Div>
-        </Section>
-      </Container>
+                  <Span 
+                    devId="welcome-message" 
+                    devName="Welcome Message" 
+                    devDescription="Welcome message for authenticated user"
+                    className="text-gray-700"
+                  >
+                    Welcome, {user?.name?.split(' ')[0]}!
+                  </Span>
+                  <Link to="/dashboard">
+                    <Button 
+                      devId="nav-dashboard-button"
+                      devName="Navigation Dashboard Button"
+                      devDescription="Dashboard button in navigation header"
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
+                    >
+                      <User className="w-4 h-4 mr-2" />
+                      Dashboard
+                    </Button>
+                  </Link>
+                </Div>
+              ) : (
+                <Div 
+                  devId="auth-buttons" 
+                  devName="Authentication Buttons" 
+                  devDescription="Login and register buttons"
+                  className="flex items-center space-x-2"
+                >
+                  <Link to="/login">
+                    <Button 
+                      devId="nav-login-button"
+                      devName="Navigation Login Button"
+                      devDescription="Login button in navigation header"
+                      variant="ghost" 
+                      className="text-gray-700 hover:text-blue-600 transition-colors"
+                    >
+                      Login
+                    </Button>
+                  </Link>
+                  <Link to="/register">
+                    <Button 
+                      devId="nav-register-button"
+                      devName="Navigation Register Button"
+                      devDescription="Register button in navigation header"
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
+                    >
+                      Book Now
+                    </Button>
+                  </Link>
+                </Div>
+              )}
+            </Div>
+          </Nav>
+        </Header>
 
-      {/* CTA Section */}
-      <Container componentId="cta-section"> {/* Changed to direct ID */}
-        <Section devId="noID" className="container mx-auto px-4 py-20">
-          <Div devId="noID" className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-2xl p-12 text-center border border-purple-500/30">
-            <H2 devId="noID" className="text-4xl font-bold text-white mb-4">Ready to Build Something Amazing?</H2>
-            <P devId="noID" className="text-gray-300 mb-8 max-w-2xl mx-auto">
-              Get started with this template and build your next project with confidence
-            </P>
-            <Div devId="noID" className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                devId="cta-start-project"
-                devName="Start Project Button"
-                devDescription="Primary CTA button to start a new project"
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-lg font-semibold transition-all transform hover:scale-105"
+        {/* Hero Section */}
+        <Container componentId="hero-section">
+          <Section 
+            devId="hero-content" 
+            devName="Hero Content" 
+            devDescription="Main hero section with hotel introduction"
+            className="relative bg-gradient-to-r from-blue-900 to-blue-700 text-white py-20"
+          >
+            <Div 
+              devId="hero-background" 
+              devName="Hero Background" 
+              devDescription="Hero background overlay"
+              className="absolute inset-0 bg-black opacity-40"
+            ></Div>
+            <Div 
+              devId="hero-content-wrapper" 
+              devName="Hero Content Wrapper" 
+              devDescription="Hero content container with animation"
+              className={`relative container mx-auto px-4 text-center transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+            >
+              <H1 
+                devId="hero-title" 
+                devName="Hero Title" 
+                devDescription="Main hero title for Van der Valk Nijmegen"
+                className="text-5xl md:text-6xl font-bold mb-6"
               >
-                <span className="flex items-center gap-2">
-                  <Star className="w-5 h-5" />
-                  Start Project
-                </span>
-              </Button>
-              <Button 
-                devId="cta-join-community"
-                devName="Join Community Button"
-                devDescription="Secondary CTA button to join the community"
-                variant="outline"
-                className="border border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white px-8 py-3 rounded-lg font-semibold transition-all"
+                Welcome to Van der Valk
+                <Span 
+                  devId="nijmegen-highlight" 
+                  devName="Nijmegen Highlight" 
+                  devDescription="Highlighted Nijmegen text"
+                  className="block text-yellow-400"
+                >
+                  Nijmegen
+                </Span>
+              </H1>
+              <P 
+                devId="hero-description" 
+                devName="Hero Description" 
+                devDescription="Hero section description"
+                className="text-xl mb-8 max-w-2xl mx-auto"
               >
-                <span className="flex items-center gap-2">
-                  <Users className="w-5 h-5" />
-                  Join Community
-                </span>
-              </Button>
+                Experience luxury and comfort in the heart of the Netherlands' oldest city. 
+                Modern amenities meet historic charm at our premier hotel.
+              </P>
+              <Div 
+                devId="hero-cta-buttons" 
+                devName="Hero CTA Buttons" 
+                devDescription="Call-to-action buttons in hero section"
+                className="flex flex-col sm:flex-row gap-4 justify-center"
+              >
+                <Button 
+                  devId="hero-book-now"
+                  devName="Book Now Button"
+                  devDescription="Primary booking button in hero section"
+                  className="bg-yellow-500 hover:bg-yellow-600 text-black px-8 py-3 rounded-lg font-semibold transition-all transform hover:scale-105"
+                  onClick={() => document.getElementById('booking-form')?.scrollIntoView({ behavior: 'smooth' })}
+                >
+                  Book Your Stay
+                </Button>
+                <Button 
+                  devId="hero-explore-button"
+                  devName="Explore Rooms Button"
+                  devDescription="Secondary button to explore rooms"
+                  variant="outline"
+                  className="border border-white text-white hover:bg-white hover:text-blue-900 px-8 py-3 rounded-lg font-semibold transition-all"
+                  onClick={() => document.getElementById('rooms')?.scrollIntoView({ behavior: 'smooth' })}
+                >
+                  Explore Rooms
+                </Button>
+              </Div>
+            </Div>
+          </Section>
+        </Container>
+
+        {/* Features Section */}
+        <Container componentId="features-section">
+          <Section devId="noID" className="py-16 bg-gray-50">
+            <Div devId="noID" className="container mx-auto px-4">
+              <Div devId="noID" className="text-center mb-12">
+                <H2 devId="noID" className="text-4xl font-bold text-gray-900 mb-4">Why Choose Van der Valk Nijmegen?</H2>
+                <P devId="noID" className="text-gray-600 max-w-2xl mx-auto">
+                  Discover what makes our hotel the perfect choice for your stay in Nijmegen
+                </P>
+              </Div>
+              <Div devId="noID" className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {features.map((feature, index) => (
+                  <Card 
+                    key={index} 
+                    devId={getFeatureCardId(index)}
+                    devName={`${feature.title} Feature Card`}
+                    devDescription={`Feature card highlighting ${feature.title}`}
+                    className="text-center p-6 hover:shadow-lg transition-shadow"
+                  >
+                    <CardContent devId="noID" className="p-0">
+                      <Div devId="noID" className="mb-4 flex justify-center">{feature.icon}</Div>
+                      <H3 className="text-xl font-semibold text-gray-900 mb-2">{feature.title}</H3>
+                      <P devId="noID" className="text-gray-600">{feature.description}</P>
+                    </CardContent>
+                  </Card>
+                ))}
+              </Div>
+            </Div>
+          </Section>
+        </Container>
+
+        {/* Rooms Section */}
+        <Container componentId="rooms-section">
+          <Section devId="noID" id="rooms" className="py-16">
+            <Div devId="noID" className="container mx-auto px-4">
+              <Div devId="noID" className="text-center mb-12">
+                <H2 devId="noID" className="text-4xl font-bold text-gray-900 mb-4">Our Rooms & Suites</H2>
+                <P devId="noID" className="text-gray-600 max-w-2xl mx-auto">
+                  Choose from our selection of comfortable and elegantly designed accommodations
+                </P>
+              </Div>
+              <Div devId="noID" className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {rooms.map((room, index) => (
+                  <Card 
+                    key={index} 
+                    devId={getRoomCardId(index)}
+                    devName={`${room.name} Room Card`}
+                    devDescription={`Room card for ${room.name} - ${room.price} per night`}
+                    className="overflow-hidden hover:shadow-lg transition-shadow"
+                  >
+                    <Div devId="noID" className="h-48 bg-gray-200 relative">
+                      <img 
+                        src={room.image} 
+                        alt={room.name}
+                        className="w-full h-full object-cover"
+                      />
+                      <Badge 
+                        devId="noID"
+                        className="absolute top-4 right-4 bg-blue-600 text-white"
+                      >
+                        {room.price}/night
+                      </Badge>
+                    </Div>
+                    <CardContent devId="noID" className="p-4">
+                      <H3 className="text-xl font-semibold text-gray-900 mb-2">{room.name}</H3>
+                      <P devId="noID" className="text-gray-600 mb-3">{room.description}</P>
+                      <Div devId="noID" className="flex flex-wrap gap-2 mb-4">
+                        {room.features.map((feature, featureIndex) => (
+                          <Badge key={featureIndex} devId="noID" variant="secondary" className="text-xs">
+                            {feature}
+                          </Badge>
+                        ))}
+                      </Div>
+                      <Button 
+                        devId="noID"
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                        onClick={() => {
+                          setBookingForm(prev => ({ ...prev, roomType: room.name.toLowerCase().replace(' ', '-') }));
+                          document.getElementById('booking-form')?.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                      >
+                        Select Room
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </Div>
+            </Div>
+          </Section>
+        </Container>
+
+        {/* Amenities Section */}
+        <Container componentId="amenities-section">
+          <Section devId="noID" id="amenities" className="py-16 bg-gray-50">
+            <Div devId="noID" className="container mx-auto px-4">
+              <Div devId="noID" className="text-center mb-12">
+                <H2 devId="noID" className="text-4xl font-bold text-gray-900 mb-4">Hotel Amenities</H2>
+                <P devId="noID" className="text-gray-600 max-w-2xl mx-auto">
+                  Enjoy our comprehensive range of facilities and services
+                </P>
+              </Div>
+              <Div devId="noID" className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+                {amenities.map((amenity, index) => (
+                  <Div 
+                    key={index} 
+                    devId={getAmenityId(index)}
+                    devName={`${amenity.name} Amenity`}
+                    devDescription={`Hotel amenity: ${amenity.name}`}
+                    className="text-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <Div devId="noID" className="text-blue-600 mb-3 flex justify-center">{amenity.icon}</Div>
+                    <P devId="noID" className="text-sm font-medium text-gray-900">{amenity.name}</P>
+                  </Div>
+                ))}
+              </Div>
+            </Div>
+          </Section>
+        </Container>
+
+        {/* Booking Form Section */}
+        <Container componentId="booking-form-section">
+          <Section devId="noID" id="booking-form" className="py-16">
+            <Div devId="noID" className="container mx-auto px-4">
+              <Div devId="noID" className="max-w-2xl mx-auto">
+                <Div devId="noID" className="text-center mb-8">
+                  <H2 devId="noID" className="text-4xl font-bold text-gray-900 mb-4">Book Your Stay</H2>
+                  <P devId="noID" className="text-gray-600">
+                    Fill out the form below and we'll get back to you with availability and pricing
+                  </P>
+                </Div>
+                <Card 
+                  devId="booking-form-card" 
+                  devName="Booking Form Card" 
+                  devDescription="Hotel booking request form"
+                  className="p-6"
+                >
+                  <form onSubmit={handleBookingSubmit} className="space-y-6">
+                    <Div devId="noID" className="grid md:grid-cols-2 gap-4">
+                      <Div devId="noID">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Check-in Date</label>
+                        <Input
+                          devId="checkin-input"
+                          devName="Check-in Date Input"
+                          devDescription="Date picker for check-in date"
+                          type="date"
+                          value={bookingForm.checkIn}
+                          onChange={(e) => setBookingForm(prev => ({ ...prev, checkIn: e.target.value }))}
+                          required
+                          className="w-full"
+                        />
+                      </Div>
+                      <Div devId="noID">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Check-out Date</label>
+                        <Input
+                          devId="checkout-input"
+                          devName="Check-out Date Input"
+                          devDescription="Date picker for check-out date"
+                          type="date"
+                          value={bookingForm.checkOut}
+                          onChange={(e) => setBookingForm(prev => ({ ...prev, checkOut: e.target.value }))}
+                          required
+                          className="w-full"
+                        />
+                      </Div>
+                    </Div>
+                    
+                    <Div devId="noID" className="grid md:grid-cols-2 gap-4">
+                      <Div devId="noID">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Number of Guests</label>
+                        <select
+                          value={bookingForm.guests}
+                          onChange={(e) => setBookingForm(prev => ({ ...prev, guests: parseInt(e.target.value) }))}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          required
+                        >
+                          {[1, 2, 3, 4, 5, 6].map(num => (
+                            <option key={num} value={num}>{num} Guest{num > 1 ? 's' : ''}</option>
+                          ))}
+                        </select>
+                      </Div>
+                      <Div devId="noID">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Room Type</label>
+                        <select
+                          value={bookingForm.roomType}
+                          onChange={(e) => setBookingForm(prev => ({ ...prev, roomType: e.target.value }))}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          required
+                        >
+                          <option value="standard">Standard Room</option>
+                          <option value="deluxe">Deluxe Room</option>
+                          <option value="executive-suite">Executive Suite</option>
+                          <option value="family">Family Room</option>
+                        </select>
+                      </Div>
+                    </Div>
+
+                    <Div devId="noID">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                      <Input
+                        devId="name-input"
+                        devName="Guest Name Input"
+                        devDescription="Input field for guest full name"
+                        type="text"
+                        value={bookingForm.name}
+                        onChange={(e) => setBookingForm(prev => ({ ...prev, name: e.target.value }))}
+                        required
+                        className="w-full"
+                        placeholder="Enter your full name"
+                      />
+                    </Div>
+
+                    <Div devId="noID" className="grid md:grid-cols-2 gap-4">
+                      <Div devId="noID">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                        <Input
+                          devId="email-input"
+                          devName="Guest Email Input"
+                          devDescription="Input field for guest email address"
+                          type="email"
+                          value={bookingForm.email}
+                          onChange={(e) => setBookingForm(prev => ({ ...prev, email: e.target.value }))}
+                          required
+                          className="w-full"
+                          placeholder="Enter your email"
+                        />
+                      </Div>
+                      <Div devId="noID">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                        <Input
+                          devId="phone-input"
+                          devName="Guest Phone Input"
+                          devDescription="Input field for guest phone number"
+                          type="tel"
+                          value={bookingForm.phone}
+                          onChange={(e) => setBookingForm(prev => ({ ...prev, phone: e.target.value }))}
+                          required
+                          className="w-full"
+                          placeholder="Enter your phone number"
+                        />
+                      </Div>
+                    </Div>
+
+                    <Button 
+                      devId="submit-booking-button"
+                      devName="Submit Booking Button"
+                      devDescription="Submit button for booking form"
+                      type="submit"
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition-colors"
+                    >
+                      <Calendar className="w-5 h-5 mr-2" />
+                      Submit Booking Request
+                    </Button>
+                  </form>
+                </Card>
+              </Div>
+            </Div>
+          </Section>
+        </Container>
+
+        {/* Contact Section */}
+        <Container componentId="contact-section">
+          <Section devId="noID" id="contact" className="py-16 bg-gray-900 text-white">
+            <Div devId="noID" className="container mx-auto px-4">
+              <Div devId="noID" className="text-center mb-12">
+                <H2 devId="noID" className="text-4xl font-bold mb-4">Contact Us</H2>
+                <P devId="noID" className="text-gray-300 max-w-2xl mx-auto">
+                  Get in touch with our friendly staff for any questions or special requests
+                </P>
+              </Div>
+              <Div devId="noID" className="grid md:grid-cols-3 gap-8 text-center">
+                <Div 
+                  devId="contact-address" 
+                  devName="Contact Address" 
+                  devDescription="Hotel address and location information"
+                >
+                  <MapPin className="w-8 h-8 text-blue-400 mx-auto mb-4" />
+                  <H3 className="text-xl font-semibold mb-2">Address</H3>
+                  <P devId="noID" className="text-gray-300">
+                    Laan van Westenenk 10<br />
+                    6516 AH Nijmegen<br />
+                    Netherlands
+                  </P>
+                </Div>
+                <Div 
+                  devId="contact-phone" 
+                  devName="Contact Phone" 
+                  devDescription="Hotel phone contact information"
+                >
+                  <Phone className="w-8 h-8 text-blue-400 mx-auto mb-4" />
+                  <H3 className="text-xl font-semibold mb-2">Phone</H3>
+                  <P devId="noID" className="text-gray-300">
+                    +31 24 123 4567<br />
+                    Available 24/7
+                  </P>
+                </Div>
+                <Div 
+                  devId="contact-email" 
+                  devName="Contact Email" 
+                  devDescription="Hotel email contact information"
+                >
+                  <Mail className="w-8 h-8 text-blue-400 mx-auto mb-4" />
+                  <H3 className="text-xl font-semibold mb-2">Email</H3>
+                  <P devId="noID" className="text-gray-300">
+                    info@vandervalk-nijmegen.nl<br />
+                    reservations@vandervalk-nijmegen.nl
+                  </P>
+                </Div>
+              </Div>
+            </Div>
+          </Section>
+        </Container>
+
+        {/* Footer */}
+        <Footer 
+          devId="hotel-footer" 
+          devName="Hotel Footer" 
+          devDescription="Hotel website footer with links and information"
+          className="bg-gray-800 text-white py-8"
+        >
+          <Div devId="noID" className="container mx-auto px-4">
+            <Div devId="noID" className="flex flex-col md:flex-row justify-between items-center">
+              <Div devId="noID" className="text-gray-300 mb-4 md:mb-0">
+                © 2024 Van der Valk Hotel Nijmegen. All rights reserved.
+              </Div>
+              <Div devId="noID" className="flex space-x-6">
+                <Link to="/restaurant" className="text-gray-300 hover:text-white transition-colors">Restaurant</Link>
+                <a href="#" className="text-gray-300 hover:text-white transition-colors">Privacy Policy</a>
+                <a href="#" className="text-gray-300 hover:text-white transition-colors">Terms & Conditions</a>
+              </Div>
             </Div>
           </Div>
-        </Section>
-      </Container>
-
-      {/* Footer */}
-      <Footer 
-        devId="main-footer" 
-        devName="Main Footer" 
-        devDescription="Site footer with links and copyright"
-        className="container mx-auto px-4 py-8 border-t border-white/10"
-      >
-        <Div devId="noID" className="flex flex-col md:flex-row justify-between items-center">
-          <Div devId="noID" className="text-gray-400 mb-4 md:mb-0">
-            © 2024 Geenius Template. Built with ❤️ for developers.
-          </Div>
-          <Div devId="noID" className="flex space-x-6">
-            <a href="#" className="text-gray-400 hover:text-white transition-colors">Documentation</a>
-            <a href="#" className="text-gray-400 hover:text-white transition-colors">GitHub</a>
-            <a href="#" className="text-gray-400 hover:text-white transition-colors">Support</a>
-          </Div>
-        </Div>
-      </Footer>
+        </Footer>
       </Div>
     </Container>
   );
