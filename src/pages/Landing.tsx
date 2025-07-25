@@ -3,23 +3,23 @@
 import React, { useState, useEffect } from 'react';
 import { MapPin, Phone, Mail, Bed, Wifi, Car, Coffee, Star, Calendar, Users, User, Utensils } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Container, Button, Card, CardContent, Badge, Header, Nav, Section, Span, H1, H2, H3, P, Div, Footer, Input, Textarea } from '../lib/dev-container';
+import { Container, Button, Card, CardContent, Badge, Header, Nav, Section, Span, H1, H2, H3, P, Div, Footer, Input } from '../lib/dev-container';
 import { useAuth } from '../components/auth/AuthProvider';
 import type { ComponentRegistryId } from '../registry/componentRegistry';
 
 // Helper functions for type-safe dynamic IDs
 const getRoomCardId = (index: number): ComponentRegistryId => {
-  const ids: ComponentRegistryId[] = ['room-card-0', 'room-card-1', 'room-card-2', 'room-card-3'];
+  const ids: ComponentRegistryId[] = ['noID', 'noID', 'noID', 'noID'];
   return ids[index] || 'noID';
 };
 
 const getAmenityId = (index: number): ComponentRegistryId => {
-  const ids: ComponentRegistryId[] = ['amenity-0', 'amenity-1', 'amenity-2', 'amenity-3', 'amenity-4', 'amenity-5'];
+  const ids: ComponentRegistryId[] = ['noID', 'noID', 'noID', 'noID', 'noID', 'noID'];
   return ids[index] || 'noID';
 };
 
 const getFeatureCardId = (index: number): ComponentRegistryId => {
-  const ids: ComponentRegistryId[] = ['feature-card-0', 'feature-card-1', 'feature-card-2', 'feature-card-3'];
+  const ids: ComponentRegistryId[] = ['noID', 'noID', 'noID', 'noID'];
   return ids[index] || 'noID';
 };
 
@@ -111,7 +111,7 @@ export const Landing: React.FC = () => {
   ];
 
   return (
-    <Container componentId="hotel-landing-page">
+    <Container componentId="noID">
       <Div 
         devId="main-wrapper" 
         devName="Main Wrapper" 
@@ -120,19 +120,19 @@ export const Landing: React.FC = () => {
       >
         {/* Header */}
         <Header 
-          devId="hotel-header" 
+          devId="noID" 
           devName="Hotel Header" 
           devDescription="Hotel website header with navigation"
           className="bg-white shadow-sm sticky top-0 z-50"
         >
           <Nav 
-            devId="hotel-nav" 
+            devId="noID" 
             devName="Hotel Navigation" 
             devDescription="Primary navigation for hotel website"
             className="container mx-auto px-4 py-4 flex items-center justify-between"
           >
             <Div 
-              devId="hotel-logo" 
+              devId="noID" 
               devName="Hotel Logo" 
               devDescription="Van der Valk hotel logo and brand"
               className="flex items-center space-x-3"
@@ -142,7 +142,7 @@ export const Landing: React.FC = () => {
               </Div>
               <Div devId="noID" className="flex flex-col">
                 <Span 
-                  devId="hotel-brand" 
+                  devId="noID" 
                   devName="Hotel Brand Name" 
                   devDescription="Van der Valk brand name"
                   className="text-xl font-bold text-gray-900"
@@ -150,7 +150,7 @@ export const Landing: React.FC = () => {
                   Van der Valk
                 </Span>
                 <Span 
-                  devId="hotel-location" 
+                  devId="noID" 
                   devName="Hotel Location" 
                   devDescription="Hotel location - Nijmegen"
                   className="text-sm text-gray-600"
@@ -161,7 +161,7 @@ export const Landing: React.FC = () => {
             </Div>
             
             <Div 
-              devId="nav-links" 
+              devId="noID" 
               devName="Navigation Links" 
               devDescription="Main navigation links"
               className="hidden md:flex items-center space-x-8"
@@ -248,7 +248,7 @@ export const Landing: React.FC = () => {
             className="relative bg-gradient-to-r from-blue-900 to-blue-700 text-white py-20"
           >
             <Div 
-              devId="hero-background" 
+              devId="noID" 
               devName="Hero Background" 
               devDescription="Hero background overlay"
               className="absolute inset-0 bg-black opacity-40"
@@ -267,7 +267,7 @@ export const Landing: React.FC = () => {
               >
                 Welcome to Van der Valk
                 <Span 
-                  devId="nijmegen-highlight" 
+                  devId="noID" 
                   devName="Nijmegen Highlight" 
                   devDescription="Highlighted Nijmegen text"
                   className="block text-yellow-400"
@@ -291,7 +291,7 @@ export const Landing: React.FC = () => {
                 className="flex flex-col sm:flex-row gap-4 justify-center"
               >
                 <Button 
-                  devId="hero-book-now"
+                  devId="noID"
                   devName="Book Now Button"
                   devDescription="Primary booking button in hero section"
                   className="bg-yellow-500 hover:bg-yellow-600 text-black px-8 py-3 rounded-lg font-semibold transition-all transform hover:scale-105"
@@ -300,7 +300,7 @@ export const Landing: React.FC = () => {
                   Book Your Stay
                 </Button>
                 <Button 
-                  devId="hero-explore-button"
+                  devId="noID"
                   devName="Explore Rooms Button"
                   devDescription="Secondary button to explore rooms"
                   variant="outline"
@@ -335,7 +335,7 @@ export const Landing: React.FC = () => {
                   >
                     <CardContent devId="noID" className="p-0">
                       <Div devId="noID" className="mb-4 flex justify-center">{feature.icon}</Div>
-                      <H3 className="text-xl font-semibold text-gray-900 mb-2">{feature.title}</H3>
+                      <H3 devId="noID" className="text-xl font-semibold text-gray-900 mb-2">{feature.title}</H3>
                       <P devId="noID" className="text-gray-600">{feature.description}</P>
                     </CardContent>
                   </Card>
@@ -346,7 +346,7 @@ export const Landing: React.FC = () => {
         </Container>
 
         {/* Rooms Section */}
-        <Container componentId="rooms-section">
+        <Container componentId="noID">
           <Section devId="noID" id="rooms" className="py-16">
             <Div devId="noID" className="container mx-auto px-4">
               <Div devId="noID" className="text-center mb-12">
@@ -378,7 +378,7 @@ export const Landing: React.FC = () => {
                       </Badge>
                     </Div>
                     <CardContent devId="noID" className="p-4">
-                      <H3 className="text-xl font-semibold text-gray-900 mb-2">{room.name}</H3>
+                      <H3 devId="noID" className="text-xl font-semibold text-gray-900 mb-2">{room.name}</H3>
                       <P devId="noID" className="text-gray-600 mb-3">{room.description}</P>
                       <Div devId="noID" className="flex flex-wrap gap-2 mb-4">
                         {room.features.map((feature, featureIndex) => (
@@ -406,7 +406,7 @@ export const Landing: React.FC = () => {
         </Container>
 
         {/* Amenities Section */}
-        <Container componentId="amenities-section">
+        <Container componentId="noID">
           <Section devId="noID" id="amenities" className="py-16 bg-gray-50">
             <Div devId="noID" className="container mx-auto px-4">
               <Div devId="noID" className="text-center mb-12">
@@ -434,7 +434,7 @@ export const Landing: React.FC = () => {
         </Container>
 
         {/* Booking Form Section */}
-        <Container componentId="booking-form-section">
+        <Container componentId="noID">
           <Section devId="noID" id="booking-form" className="py-16">
             <Div devId="noID" className="container mx-auto px-4">
               <Div devId="noID" className="max-w-2xl mx-auto">
@@ -445,7 +445,7 @@ export const Landing: React.FC = () => {
                   </P>
                 </Div>
                 <Card 
-                  devId="booking-form-card" 
+                  devId="noID" 
                   devName="Booking Form Card" 
                   devDescription="Hotel booking request form"
                   className="p-6"
@@ -455,7 +455,7 @@ export const Landing: React.FC = () => {
                       <Div devId="noID">
                         <label className="block text-sm font-medium text-gray-700 mb-2">Check-in Date</label>
                         <Input
-                          devId="checkin-input"
+                          devId="noID"
                           devName="Check-in Date Input"
                           devDescription="Date picker for check-in date"
                           type="date"
@@ -468,7 +468,7 @@ export const Landing: React.FC = () => {
                       <Div devId="noID">
                         <label className="block text-sm font-medium text-gray-700 mb-2">Check-out Date</label>
                         <Input
-                          devId="checkout-input"
+                          devId="noID"
                           devName="Check-out Date Input"
                           devDescription="Date picker for check-out date"
                           type="date"
@@ -513,7 +513,7 @@ export const Landing: React.FC = () => {
                     <Div devId="noID">
                       <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
                       <Input
-                        devId="name-input"
+                        devId="noID"
                         devName="Guest Name Input"
                         devDescription="Input field for guest full name"
                         type="text"
@@ -529,7 +529,7 @@ export const Landing: React.FC = () => {
                       <Div devId="noID">
                         <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
                         <Input
-                          devId="email-input"
+                          devId="noID"
                           devName="Guest Email Input"
                           devDescription="Input field for guest email address"
                           type="email"
@@ -543,7 +543,7 @@ export const Landing: React.FC = () => {
                       <Div devId="noID">
                         <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
                         <Input
-                          devId="phone-input"
+                          devId="noID"
                           devName="Guest Phone Input"
                           devDescription="Input field for guest phone number"
                           type="tel"
@@ -557,7 +557,7 @@ export const Landing: React.FC = () => {
                     </Div>
 
                     <Button 
-                      devId="submit-booking-button"
+                      devId="noID"
                       devName="Submit Booking Button"
                       devDescription="Submit button for booking form"
                       type="submit"
@@ -574,7 +574,7 @@ export const Landing: React.FC = () => {
         </Container>
 
         {/* Contact Section */}
-        <Container componentId="contact-section">
+        <Container componentId="noID">
           <Section devId="noID" id="contact" className="py-16 bg-gray-900 text-white">
             <Div devId="noID" className="container mx-auto px-4">
               <Div devId="noID" className="text-center mb-12">
@@ -585,12 +585,12 @@ export const Landing: React.FC = () => {
               </Div>
               <Div devId="noID" className="grid md:grid-cols-3 gap-8 text-center">
                 <Div 
-                  devId="contact-address" 
+                  devId="noID" 
                   devName="Contact Address" 
                   devDescription="Hotel address and location information"
                 >
                   <MapPin className="w-8 h-8 text-blue-400 mx-auto mb-4" />
-                  <H3 className="text-xl font-semibold mb-2">Address</H3>
+                  <H3 devId="noID" className="text-xl font-semibold mb-2">Address</H3>
                   <P devId="noID" className="text-gray-300">
                     Laan van Westenenk 10<br />
                     6516 AH Nijmegen<br />
@@ -598,24 +598,24 @@ export const Landing: React.FC = () => {
                   </P>
                 </Div>
                 <Div 
-                  devId="contact-phone" 
+                  devId="noID" 
                   devName="Contact Phone" 
                   devDescription="Hotel phone contact information"
                 >
                   <Phone className="w-8 h-8 text-blue-400 mx-auto mb-4" />
-                  <H3 className="text-xl font-semibold mb-2">Phone</H3>
+                  <H3 devId="noID" className="text-xl font-semibold mb-2">Phone</H3>
                   <P devId="noID" className="text-gray-300">
                     +31 24 123 4567<br />
                     Available 24/7
                   </P>
                 </Div>
                 <Div 
-                  devId="contact-email" 
+                  devId="noID" 
                   devName="Contact Email" 
                   devDescription="Hotel email contact information"
                 >
                   <Mail className="w-8 h-8 text-blue-400 mx-auto mb-4" />
-                  <H3 className="text-xl font-semibold mb-2">Email</H3>
+                  <H3 devId="noID" className="text-xl font-semibold mb-2">Email</H3>
                   <P devId="noID" className="text-gray-300">
                     info@vandervalk-nijmegen.nl<br />
                     reservations@vandervalk-nijmegen.nl
@@ -628,7 +628,7 @@ export const Landing: React.FC = () => {
 
         {/* Footer */}
         <Footer 
-          devId="hotel-footer" 
+          devId="noID" 
           devName="Hotel Footer" 
           devDescription="Hotel website footer with links and information"
           className="bg-gray-800 text-white py-8"
