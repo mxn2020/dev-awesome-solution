@@ -268,14 +268,11 @@ export const Landing: React.FC = () => {
             devId="hero-content" 
             devName="Hero Content" 
             devDescription="Main hero section with hotel introduction"
-            className="relative bg-gradient-to-r from-blue-900 to-blue-700 text-white py-20"
+            className="relative text-white py-20 min-h-[500px] bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg?auto=compress&cs=tinysrgb&w=1920')`,
+            }}
           >
-            <Div 
-              devId="noID" 
-              devName="Hero Background" 
-              devDescription="Hero background overlay"
-              className="absolute inset-0 bg-black opacity-40"
-            ></Div>
             <Div 
               devId="hero-content-wrapper" 
               devName="Hero Content Wrapper" 
